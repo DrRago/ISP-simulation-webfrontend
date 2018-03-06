@@ -8,7 +8,7 @@ exports.login = (request, response) => {
   const password = request.body.password;
   // Get MD5 Hashed Password
   const password_md5 = md5(password);
-
+  console.log("SELECT * FROM radcheck WHERE username=`" + username + "` AND value=`" + password_md5 + "`;");
   constants.CONNECTION.query("SELECT * FROM radcheck WHERE username=`" + username + "` AND value=`" + password_md5 + "`;", (error, result) => {
     if (error) throw error;
     console.log("Result: " + result);
