@@ -13,7 +13,7 @@ const constants = require('./constants.js');
 const mysql = require('mysql');
 constants.CONNECTION = mysql.createConnection({
   host: "tandashi.de",
-  user: "webserver",
+  user: "radius",
   password: "12345678",
   database: "radius"
 });
