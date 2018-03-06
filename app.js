@@ -35,12 +35,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Configure the sessions
 app.use(session({resave:false, saveUninitialized:true, secret: "ajs123lmsad9123möl9undj"}));
 
-app.listen(port, hostname, () => {
+app.listen(port, () => {
   console.log(`Server is running on http://${hostname}:${port}.`);
 });
 
 app.get('/', (request, response) => {
-  response.send('Hello World');
+  response.redirect("/login");
 });
 
 app.get('/register', session_gets.register);
