@@ -41,4 +41,11 @@ exports.register = (request, response) => {
             return response.status(500).render("error/500")
         }
     })
+
+    constants.CONNECTIONS.VMAIL.query("INSERT INTO `accounts`(`username`, `quota`, `enable`, `sendonly`, `password`, `domain`) VALUES ('" + username + "','2048','TRUE', 'FALSE', '" + password_md5 + "', 'dqi14.de')", (error, result) => {
+        if (error) {
+            console.log(error)
+            return response.status(500).render("error/500")
+        }
+    })
 };
