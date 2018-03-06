@@ -20,7 +20,7 @@ constants.CONNECTION = mysql.createConnection({
 
 constants.CONNECTION.connect((error) => {
     if (error) {
-        console.log(error)
+        console.log(error);
     }
     else {
         console.log("Connected to MYSQL!");
