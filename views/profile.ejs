@@ -1,24 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile</title>
+    <title>Statistics</title>
 
     <% include partials/css %>
-  </head>
-  <body>
 
-    <img src="<%= profile.avatar.path %>" height="200px" width="200px" /><br />
-    <br />
-    Twitter Username: <%= profile.social.twitter.username %><br />
-    Twitter Link: <a href="<%= profile.social.twitter.url %>"><%= profile.social.twitter.url %></a><br />
-    <br />
-    Facebook Username: <%= profile.social.facebook.username %><br />
-    Facebook Link: <a href="<%= profile.social.facebook.url %>"><%= profile.social.facebook.url %></a><br />
+    <%
+    let overall = 0;
+    let average = 0;
+    let percentage = 0;
+    data.forEach((value, index) => {
+        overall += value.acctsessiontime;
+    })
+    average = overall / data.length
 
-    <!-- Load script at the end so the page loading isn't blocked -->
-    <% include partials/js %>
-  </body>
+    percentage = Math.round((average / overall) * 100)
+    %>
+
+    <style>
+        .card-body {
+            padding: 1.25em;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-light">
+    <div class="container">
+
+        <h2>Statistics</h2>
+
+        <!-- Links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item" id="logout">
+                <a href="/logout" title="Sign out"><i class="fa fa-sign-out fa-lg" style="color: #777"></i></a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+<div class="container my-5">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Welcome <%= username %></h3>
+            <p class="card-text">On this page you can view your recent sessions =)</p>
+            <p class="card-text" style="text-align: center;">Average session time:</p>
+            <div class="c100 p<%= percentage %>" style="left: 50%; transform: translateX(-50%);">
+                <span> <%= average.toFixed(2) %>s</span>
+                <div class="slice">
+                    <div class="bar"></div>
+                    <div class="fill"></div>
+                </div>
+            </div>
+            <div style="height: calc(100vh - 6rem - 13em); overflow: scroll; overflow-x:hidden; width: 100%;">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Connection Type</th>
+                        <th>Session begin</th>
+                        <th>Session duration (in seconds)</th>
+                        <th>Service</th>
+                        <th>Termination cause</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% data.forEach((value, index) => { %>
+                    <%- include('partials/table_row', {NUM: index, VALUE: value}) %>
+                    <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- Load script at the end so the page loading isn't blocked -->
+<% include partials/js %>
+</body>
 </html>

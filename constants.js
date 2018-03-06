@@ -1,5 +1,11 @@
-const CONNECTION = undefined;
+const CONNECTIONS = {
+    RADIUS: undefined,
+    VMAIL: undefined
+};
+
+const CONNECTION_SUCCESS = false;
 
 module.exports = {
-  CONNECTION : CONNECTION
+    CONNECTIONS: CONNECTIONS,
+    CONNECTION_SUCCESS
 }

@@ -11,21 +11,40 @@ const hostname = '127.0.0.1';
 
 const constants = require('./constants.js');
 const mysql = require('mysql');
-constants.CONNECTION = mysql.createConnection({
-  host: "tandashi.de",
-  user: "radius",
-  password: "12345678",
-  database: "radius"
+constants.CONNECTIONS.RADIUS = mysql.createConnection({
+    host: "192.168.1.10",
+    user: "webserver",
+    password: "12345678",
+    database: "radius"
 });
 
-constants.CONNECTION.connect((error) => {
+constants.CONNECTIONS.VMAIL = mysql.createConnection({
+    host: "192.168.1.10",
+    user: "webserver",
+    password: "12345678",
+    database: "vmail"
+})
+
+constants.CONNECTIONS.RADIUS.connect((error) => {
     if (error) {
         console.log(error);
     }
     else {
-        console.log("Connected to MYSQL!");
+        console.log("Connected to MYSQL RADIUS!");
+
+        constants.CONNECTIONS.VMAIL.connect((error) => {
+            if (error) {
+                console.log(error);
+            }
+            else {
+                console.log("Connected to MYSQL VMAIL!");
+                constants.CONNECTION_SUCCESS = true
+            }
+        });
     }
 });
+
+
 
 const session_posts = require('./routes/session_post.js');
 const session_gets = require('./routes/session_get.js');
@@ -38,18 +57,21 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Middleware BodyParser
 app.use(body_parser.json());
-app.use(body_parser.urlencoded({ extended: false }));
+app.use(body_parser.urlencoded({extended: false}));
 // Set the static directory for the client resources like css, client js, ...
 app.use(express.static(path.join(__dirname, 'public')));
 // Configure the sessions
-app.use(session({resave:false, saveUninitialized:true, secret: "ajs123lmsad9123möl9undj"}));
+app.use(session({resave: false, saveUninitialized: true, secret: "ajs123lmsad9123möl9undj"}));
 
 app.listen(port, () => {
-  console.log(`Server is running on http://${hostname}:${port}.`);
+    console.log(`Server is running on http://${hostname}:${port}.`);
 });
 
 app.get('/', (request, response) => {
-  response.redirect("/login");
+    if (!constants.CONNECTION_SUCCESS) {
+        return response.status(500).render("error/500")
+    }
+    response.redirect("/login");
 });
 
 app.get('/register', session_gets.register);
@@ -59,4 +81,11 @@ app.get('/login', session_gets.login);
 app.post('/login', session_posts.login);
 
 app.get('/logout', session_gets.logout);
-app.get('/profile/:user_id', profile_gets.view);
+app.get('/profile', profile_gets.view);
+
+app.get('*', (request, response) => {
+    if (!constants.CONNECTION_SUCCESS) {
+        return response.status(500).render("error/500")
+    }
+    return response.status(404).render("error/404")
+})
