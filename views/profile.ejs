@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile</title>
+
+    <% include partials/css %>
+  </head>
+  <body>
+
+    <img src="<%= profile.avatar.path %>" height="200px" width="200px" /><br />
+    <br />
+    Twitter Username: <%= profile.social.twitter.username %><br />
+    Twitter Link: <a href="<%= profile.social.twitter.url %>"><%= profile.social.twitter.url %></a><br />
+    <br />
+    Facebook Username: <%= profile.social.facebook.username %><br />
+    Facebook Link: <a href="<%= profile.social.facebook.url %>"><%= profile.social.facebook.url %></a><br />
+
+    <!-- Load script at the end so the page loading isn't blocked -->
+    <% include partials/js %>
+  </body>
+</html>
