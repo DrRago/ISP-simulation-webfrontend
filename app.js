@@ -13,9 +13,18 @@ const constants = require('./constants.js');
 const mysql = require('mysql');
 constants.CONNECTION = mysql.createConnection({
   host: "tandashi.de",
-  user: "",
-  password: "",
+  user: "webserver",
+  password: "12345678",
   database: "radius"
+});
+
+constants.CONNECTION.connect((error) => {
+    if (error) {
+        console.log(error)
+    }
+    else {
+        console.log("Connected to MYSQL!");
+    }
 });
 
 const session_posts = require('./routes/session_post.js');
