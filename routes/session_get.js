@@ -6,7 +6,7 @@ exports.login = (request, response) => {
         return response.status(500).render("error/500")
     }
     if (auth.auth(request)) {
-        return response.redirect("/profile")
+        return response.redirect("/stats")
     }
     response.render('login')
 };
@@ -16,7 +16,7 @@ exports.register = (request, response) => {
         return response.status(500).render("error/500")
     }
     if (auth.auth(request)) {
-        return response.redirect("/profile")
+        return response.redirect("/stats")
     }
     response.render('register');
 };

@@ -20,31 +20,39 @@ exports.login = (request, response) => {
         }
         console.log(username + " logged in");
         request.session.user = user;
-        return response.redirect("/profile")
+        return response.redirect("/stats")
     });
 };
 
 exports.register = (request, response) => {
     if (auth.auth(request)) {
-        return response.redirect("/profile")
+        return response.redirect("/stats")
     }
     // Get the provided username
     const username = request.body.username;
-    // Get the provided password
-    const password = request.body.password;
+    let password = false;
+
+    if (request.body.password === request.body.passwordCheck) {
+        // Get the provided password
+        password = request.body.password;
+    } else {
+        return response.status(400).render("error/400");
+    }
+
+
     // Get MD5 Hashed Password
     const password_md5 = md5(password);
 
     constants.CONNECTIONS.RADIUS.query("INSERT INTO `radcheck`(`username`, `attribute`, `op`, `value`) VALUES ('" + username + "','MD5-Password',':=','" + password_md5 + "')", (error, result) => {
         if (error) {
-            console.log(error)
+            console.log(error);
             return response.status(500).render("error/500")
         }
-    })
+    });
 
     constants.CONNECTIONS.VMAIL.query("INSERT INTO `accounts`(`username`, `quota`, `enable`, `sendonly`, `password`, `domain`) VALUES ('" + username + "','2048','TRUE', 'FALSE', '" + password_md5 + "', 'dqi14.de')", (error, result) => {
         if (error) {
-            console.log(error)
+            console.log(error);
             return response.status(500).render("error/500")
         }
     })

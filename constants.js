@@ -8,4 +8,4 @@ const CONNECTION_SUCCESS = false;
 module.exports = {
     CONNECTIONS: CONNECTIONS,
     CONNECTION_SUCCESS
-}
+};

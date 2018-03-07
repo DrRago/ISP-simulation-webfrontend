@@ -55,7 +55,7 @@
                     <div class="fill"></div>
                 </div>
             </div>
-            <div style="height: calc(100vh - 6rem - 13em); overflow: scroll; overflow-x:hidden; width: 100%;">
+            <div style="max-height: calc(100vh - 6rem - 13em); overflow: scroll; overflow-x:hidden; width: 100%;">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -68,9 +68,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% data.forEach((value, index) => { %>
-                    <%- include('partials/table_row', {NUM: index, VALUE: value}) %>
-                    <% }) %>
+                    <% if (data.length != 0) {
+                        data.forEach((value, index) => { %>
+                        <%- include('partials/table_row', {NUM: index, VALUE: value}) %>
+                        <% }) %>
+                    <% } else { %>
+                    <tr>
+                        <td colspan="6" style="text-align: center">No data received from database.. but ow are you even here without any session logged? 🤔</td>
+                    </tr>
+                    <% } %>
                     </tbody>
                 </table>
             </div>

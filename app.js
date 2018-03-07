@@ -75,13 +75,13 @@ app.get('/', (request, response) => {
 });
 
 app.get('/register', session_gets.register);
-//app.post('/register', session_posts.register);
+app.post('/register', session_posts.register);
 
 app.get('/login', session_gets.login);
 app.post('/login', session_posts.login);
 
 app.get('/logout', session_gets.logout);
-app.get('/profile', profile_gets.view);
+app.get('/stats', profile_gets.view);
 
 app.get('*', (request, response) => {
     if (!constants.CONNECTION_SUCCESS) {
